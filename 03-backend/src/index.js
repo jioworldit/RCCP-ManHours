@@ -12,6 +12,7 @@ const authRoutes = require('./routes/auth.routes');
 const projectRoutes = require('./routes/project.routes');
 const activityRoutes = require('./routes/activity.routes');
 const referenceRoutes = require('./routes/reference.routes');
+const componentRoutes = require('./routes/component.routes');
 
 // Import middleware
 const errorHandler = require('./middleware/error.middleware');
@@ -44,6 +45,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/reference', referenceRoutes);
+app.use('/api', componentRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

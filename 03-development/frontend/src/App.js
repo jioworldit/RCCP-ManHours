@@ -1,24 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
+import ActivitiesGrid from './components/ActivitiesGrid';
 import './App.css';
 
 function App() {
+  // Get project ID from URL query param or use default for development
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectId = urlParams.get('projectId') || 'demo-project-id';
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ActivitiesGrid projectId={projectId} />
     </div>
   );
 }
