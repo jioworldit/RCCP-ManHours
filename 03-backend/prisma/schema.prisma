@@ -50,6 +50,7 @@ model Project {
   technicalParameters  TechnicalParameters?
   projectScopes        ProjectScope[]
   activities           Activity[]
+  components           Component[]
 
   @@index([customerName], name: "idx_projects_customer")
   @@index([productType], name: "idx_projects_product_type")
@@ -261,6 +262,35 @@ model CalculationRule {
   @@index([scopeTypeCode], name: "idx_calc_rules_scope")
   @@index([isActive], name: "idx_calc_rules_active")
   @@map("calculation_rules")
+}
+
+// Project Components (PV, Skids, E-House, Structure, Other)
+model Component {
+  id              String   @id @default(uuid())
+  name            String
+  category        ComponentCategory
+  quantity        Int      @default(1)
+  thicknessMm     Decimal? @map("thickness_mm") @db.Decimal(8, 2)
+  material        String?
+  
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  projectId       String   @map("project_id")
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId], name: "idx_components_project")
+  @@index([category], name: "idx_components_category")
+  @@map("components")
+}
+
+enum ComponentCategory {
+  PV
+  SKIDS
+  EHOUSE @map("E-House")
+  STRUCTURE
+  OTHER
 }
 
 // Generated activities (Bill of Activities)

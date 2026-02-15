@@ -9,21 +9,33 @@ const errorHandler = (err, req, res, next) => {
     switch (err.code) {
       case 'P2002':
         return res.status(409).json({
+          success: false,
           error: 'Conflict',
           message: 'A record with this value already exists',
-          field: err.meta?.target
+          details: {
+            field: err.meta?.target
+          }
         });
       
       case 'P2025':
         return res.status(404).json({
+          success: false,
           error: 'Not Found',
           message: 'Record not found'
         });
       
       case 'P2003':
         return res.status(400).json({
+          success: false,
           error: 'Foreign Key Constraint',
           message: 'Referenced record does not exist'
+        });
+
+      case 'P2014':
+        return res.status(400).json({
+          success: false,
+          error: 'Relation Constraint',
+          message: 'The change you are trying to make would violate the required relation'
         });
     }
   }
@@ -31,6 +43,7 @@ const errorHandler = (err, req, res, next) => {
   // Validation errors
   if (err.name === 'ValidationError') {
     return res.status(400).json({
+      success: false,
       error: 'Validation Error',
       message: err.message,
       details: err.errors
@@ -40,8 +53,26 @@ const errorHandler = (err, req, res, next) => {
   // Syntax errors (malformed JSON)
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({
+      success: false,
       error: 'Bad Request',
       message: 'Invalid JSON in request body'
+    });
+  }
+
+  // JWT errors
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      success: false,
+      error: 'Authentication Failed',
+      message: 'Invalid token'
+    });
+  }
+
+  if (err.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      success: false,
+      error: 'Authentication Failed',
+      message: 'Token expired'
     });
   }
 
@@ -50,6 +81,7 @@ const errorHandler = (err, req, res, next) => {
   const message = err.message || 'Internal server error';
 
   res.status(statusCode).json({
+    success: false,
     error: err.name || 'Error',
     message: message,
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })

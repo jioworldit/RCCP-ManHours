@@ -1,4 +1,4 @@
-const { body, param, validationResult } = require('express-validator');
+const { body, param, query, validationResult } = require('express-validator');
 
 /**
  * Handle validation errors
@@ -7,13 +7,40 @@ const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
+      success: false,
       error: 'Validation Error',
       message: 'Request validation failed',
-      details: errors.array()
+      details: errors.array().map(err => ({
+        field: err.path,
+        message: err.msg,
+        value: err.value
+      }))
     });
   }
   next();
 };
+
+/**
+ * Pagination validation rules
+ */
+const paginationValidation = [
+  query('page')
+    .optional()
+    .isInt({ min: 1 }).withMessage('Page must be a positive integer')
+    .toInt(),
+  query('limit')
+    .optional()
+    .isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100')
+    .toInt(),
+  query('sortBy')
+    .optional()
+    .isIn(['createdAt', 'updatedAt', 'projectNumber', 'customerName', 'status'])
+    .withMessage('Invalid sort field'),
+  query('sortOrder')
+    .optional()
+    .isIn(['asc', 'desc'])
+    .withMessage('Sort order must be asc or desc')
+];
 
 /**
  * Project validation rules
@@ -65,6 +92,30 @@ const projectValidation = {
     param('id')
       .isUUID().withMessage('Invalid project ID'),
     handleValidationErrors
+  ],
+
+  list: [
+    ...paginationValidation,
+    query('status')
+      .optional()
+      .isIn(['DRAFT', 'IN_PROGRESS', 'COMPLETED', 'ARCHIVED'])
+      .withMessage('Invalid status filter'),
+    query('productType')
+      .optional()
+      .isIn(['Vessel', 'Skid', 'Structure', 'EHouse'])
+      .withMessage('Invalid product type filter'),
+    query('search')
+      .optional()
+      .trim()
+      .isLength({ max: 100 })
+      .withMessage('Search query must be less than 100 characters'),
+    handleValidationErrors
+  ],
+
+  delete: [
+    param('id')
+      .isUUID().withMessage('Invalid project ID'),
+    handleValidationErrors
   ]
 };
 
@@ -73,6 +124,8 @@ const projectValidation = {
  */
 const technicalParamsValidation = {
   create: [
+    param('id')
+      .isUUID().withMessage('Invalid project ID'),
     body('shellThicknessMm')
       .optional()
       .isFloat({ min: 0 }).withMessage('Shell thickness must be a positive number'),
@@ -86,9 +139,10 @@ const technicalParamsValidation = {
       .optional()
       .isFloat({ min: 0 }),
     body('materialGrade')
-      .notEmpty().withMessage('Material grade is required'),
+      .optional()
+      .notEmpty().withMessage('Material grade cannot be empty'),
     body('materialCategory')
-      .notEmpty()
+      .optional()
       .isIn(['CS', 'SS', 'ALLOY', 'DUPLEX', 'ALUMINUM']),
     body('numNozzles')
       .optional()
@@ -96,6 +150,24 @@ const technicalParamsValidation = {
     body('linearWeldLengthM')
       .optional()
       .isFloat({ min: 0 }),
+    handleValidationErrors
+  ]
+};
+
+/**
+ * Scope selections validation
+ */
+const scopeSelectionValidation = {
+  save: [
+    param('id')
+      .isUUID().withMessage('Invalid project ID'),
+    body('scopeSelections')
+      .isArray().withMessage('scopeSelections must be an array'),
+    body('scopeSelections.*.scopeTypeId')
+      .isUUID().withMessage('Invalid scope type ID'),
+    body('scopeSelections.*.isSelected')
+      .optional()
+      .isBoolean().withMessage('isSelected must be a boolean'),
     handleValidationErrors
   ]
 };
@@ -158,6 +230,7 @@ const activityValidation = {
 module.exports = {
   projectValidation,
   technicalParamsValidation,
+  scopeSelectionValidation,
   authValidation,
   activityValidation,
   handleValidationErrors
