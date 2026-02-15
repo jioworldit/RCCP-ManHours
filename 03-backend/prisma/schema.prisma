@@ -1,0 +1,323 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User authentication model
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  projects Project[]
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  USER
+  ENGINEER
+  VIEWER
+}
+
+// Main project model
+model Project {
+  id                   String   @id @default(uuid())
+  projectNumber        String   @unique @map("project_number")
+  customerName         String   @map("customer_name")
+  productType          ProductType @map("product_type")
+  description          String?
+  quantity             Int      @default(1)
+  status               ProjectStatus @default(DRAFT)
+  totalEstimatedHours  Decimal? @map("total_estimated_hours") @db.Decimal(10, 2)
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  userId               String   @map("user_id")
+  user                 User     @relation(fields: [userId], references: [id])
+  
+  technicalParameters  TechnicalParameters?
+  projectScopes        ProjectScope[]
+  activities           Activity[]
+
+  @@index([customerName], name: "idx_projects_customer")
+  @@index([productType], name: "idx_projects_product_type")
+  @@index([status], name: "idx_projects_status")
+  @@map("projects")
+}
+
+enum ProductType {
+  Vessel
+  Skid
+  Structure
+  EHouse @map("E-House")
+}
+
+enum ProjectStatus {
+  DRAFT
+  IN_PROGRESS @map("in_progress")
+  COMPLETED
+  ARCHIVED
+}
+
+// Scope types reference table
+model ScopeType {
+  id              String   @id @default(uuid())
+  code            String   @unique
+  name            String
+  category        ScopeCategory
+  description     String?
+  displayOrder    Int      @default(0) @map("display_order")
+  requiresWelding Boolean  @default(false) @map("requires_welding")
+  requiresNdt     Boolean  @default(false) @map("requires_ndt")
+  isActive        Boolean  @default(true) @map("is_active")
+
+  projectScopes   ProjectScope[]
+
+  @@map("scope_types")
+}
+
+enum ScopeCategory {
+  PREPARATION @map("preparation")
+  FABRICATION @map("fabrication")
+  TESTING     @map("testing")
+  FINISHING   @map("finishing")
+}
+
+// Project scope selections
+model ProjectScope {
+  id              String   @id @default(uuid())
+  isSelected      Boolean  @default(false) @map("is_selected")
+  notes           String?
+  estimatedHours  Decimal? @map("estimated_hours") @db.Decimal(10, 2)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  projectId       String   @map("project_id")
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  scopeTypeId     String   @map("scope_type_id")
+  scopeType       ScopeType @relation(fields: [scopeTypeId], references: [id])
+  
+  activities      Activity[]
+
+  @@unique([projectId, scopeTypeId])
+  @@index([projectId], name: "idx_project_scopes_project")
+  @@index([scopeTypeId], name: "idx_project_scopes_scope")
+  @@map("project_scopes")
+}
+
+// Technical parameters for projects
+model TechnicalParameters {
+  id                             String   @id @default(uuid())
+  
+  // Physical Dimensions
+  shellThicknessMm              Decimal? @map("shell_thickness_mm") @db.Decimal(8, 2)
+  diameterMm                    Decimal? @map("diameter_mm") @db.Decimal(10, 2)
+  lengthMm                      Decimal? @map("length_mm") @db.Decimal(10, 2)
+  structuralWeightTons          Decimal? @map("structural_weight_tons") @db.Decimal(8, 3)
+  
+  // Material Properties
+  materialGrade                 String   @map("material_grade")
+  materialCategory              MaterialCategory @map("material_category")
+  
+  // Fabrication Details
+  numNozzles                    Int      @default(0) @map("num_nozzles")
+  numManholes                   Int      @default(0) @map("num_manholes")
+  linearWeldLengthM             Decimal  @default(0) @map("linear_weld_length_m") @db.Decimal(8, 2)
+  
+  // Design Conditions
+  designPressureBar             Decimal? @map("design_pressure_bar") @db.Decimal(8, 2)
+  designTempCelsius             Decimal? @map("design_temp_celsius") @db.Decimal(8, 2)
+  corrosionAllowanceMm          Decimal  @default(0) @map("corrosion_allowance_mm") @db.Decimal(6, 2)
+  
+  // Special Requirements
+  requiresRadiography           Boolean  @default(false) @map("requires_radiography")
+  requiresStressRelieve         Boolean  @default(false) @map("requires_stress_relieve")
+  requiresPostWeldHeatTreatment Boolean  @default(false) @map("requires_post_weld_heat_treatment")
+  
+  createdAt                     DateTime @default(now()) @map("created_at")
+  updatedAt                     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  projectId                     String   @unique @map("project_id")
+  project                       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId], name: "idx_tech_params_project")
+  @@index([materialGrade], name: "idx_tech_params_material")
+  @@map("technical_parameters")
+}
+
+enum MaterialCategory {
+  CS
+  SS
+  ALLOY @map("Alloy")
+  DUPLEX
+  ALUMINUM @map("Aluminum")
+}
+
+// Material grades reference table
+model MaterialGrade {
+  id                  String   @id @default(uuid())
+  gradeCode           String   @unique @map("grade_code")
+  gradeName           String   @map("grade_name")
+  category            MaterialCategory
+  
+  // Productivity Multipliers
+  cuttingFactor       Decimal  @default(1.00) @map("cutting_factor") @db.Decimal(4, 2)
+  fitupFactor         Decimal  @default(1.00) @map("fitup_factor") @db.Decimal(4, 2)
+  weldingFactor       Decimal  @default(1.00) @map("welding_factor") @db.Decimal(4, 2)
+  ndtFactor           Decimal  @default(1.00) @map("ndt_factor") @db.Decimal(4, 2)
+  
+  // Specific properties
+  densityKgM3         Int?     @map("density_kg_m3")
+  typicalThicknessRangeMm String? @map("typical_thickness_range_mm")
+  
+  isActive            Boolean  @default(true) @map("is_active")
+
+  @@map("material_grades")
+}
+
+// Welding processes reference table
+model WeldingProcess {
+  id                  String   @id @default(uuid())
+  processCode         String   @unique @map("process_code")
+  processName         String   @map("process_name")
+  processType         ProcessType @map("process_type")
+  
+  // Performance Metrics
+  depositRateKgHr     Decimal? @map("deposit_rate_kg_hr") @db.Decimal(5, 2)
+  efficiencyFactor    Decimal  @default(0.85) @map("efficiency_factor") @db.Decimal(4, 2)
+  setupTimeMinutes    Int      @default(15) @map("setup_time_minutes")
+  
+  // Applicability
+  applicableMaterials String?  @map("applicable_materials")
+  typicalThicknessRangeMm String? @map("typical_thickness_range_mm")
+  
+  isActive            Boolean  @default(true) @map("is_active")
+
+  activities          Activity[]
+
+  @@map("welding_processes")
+}
+
+enum ProcessType {
+  MANUAL @map("manual")
+  SEMI_AUTO @map("semi-auto")
+  AUTO @map("auto")
+}
+
+// Calculation rules for the estimation engine
+model CalculationRule {
+  id                      String   @id @default(uuid())
+  
+  // Rule Identification
+  ruleName                String   @map("rule_name")
+  ruleCode                String   @unique @map("rule_code")
+  description             String?
+  
+  // Applicability Filters
+  productType             ProductType? @map("product_type")
+  materialCategory        MaterialCategory? @map("material_category")
+  scopeTypeCode           String?  @map("scope_type_code")
+  
+  // Activity Generation Pattern
+  activityCodePattern     String   @map("activity_code_pattern")
+  activityDescriptionTemplate String @map("activity_description_template")
+  
+  // Calculation Formula
+  baseHoursFormula        String   @map("base_hours_formula")
+  requiredParameters      Json     @default("[]") @map("required_parameters")
+  
+  // Conditions
+  minThicknessMm          Decimal? @map("min_thickness_mm") @db.Decimal(8, 2)
+  maxThicknessMm          Decimal? @map("max_thickness_mm") @db.Decimal(8, 2)
+  minDiameterMm           Decimal? @map("min_diameter_mm") @db.Decimal(10, 2)
+  maxDiameterMm           Decimal? @map("max_diameter_mm") @db.Decimal(10, 2)
+  
+  // Multipliers
+  defaultDifficultyFactor Decimal  @default(1.00) @map("default_difficulty_factor") @db.Decimal(4, 2)
+  defaultEfficiencyFactor Decimal  @default(0.85) @map("default_efficiency_factor") @db.Decimal(4, 2)
+  
+  // Metadata
+  priority                Int      @default(100)
+  isActive                Boolean  @default(true) @map("is_active")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  @@index([productType], name: "idx_calc_rules_product")
+  @@index([materialCategory], name: "idx_calc_rules_material")
+  @@index([scopeTypeCode], name: "idx_calc_rules_scope")
+  @@index([isActive], name: "idx_calc_rules_active")
+  @@map("calculation_rules")
+}
+
+// Generated activities (Bill of Activities)
+model Activity {
+  id                  String   @id @default(uuid())
+  
+  // Activity Identification
+  activityCode        String   @map("activity_code")
+  description         String
+  scopeTypeCode       String?  @map("scope_type_code")
+  
+  // Quantities
+  quantity            Decimal  @default(1) @db.Decimal(10, 2)
+  unit                ActivityUnit
+  
+  // Calculation Components
+  baseHours           Decimal  @map("base_hours") @db.Decimal(8, 2)
+  difficultyFactor    Decimal  @default(1.00) @map("difficulty_factor") @db.Decimal(4, 2)
+  efficiencyFactor    Decimal  @default(0.85) @map("efficiency_factor") @db.Decimal(4, 2)
+  totalHours          Decimal  @map("total_hours") @db.Decimal(8, 2)
+  
+  // Resource Planning
+  weldingProcessCode  String?  @map("welding_process")
+  weldingProcess      WeldingProcess? @relation(fields: [weldingProcessCode], references: [processCode])
+  crewSize            Int      @default(1) @map("crew_size")
+  durationDays        Decimal? @map("duration_days") @db.Decimal(5, 2)
+  
+  // Tracking
+  isAutoGenerated     Boolean  @default(true) @map("is_auto_generated")
+  isManualEdit        Boolean  @default(false) @map("is_manual_edit")
+  manualOverrideHours Decimal? @map("manual_override_hours") @db.Decimal(8, 2)
+  notes               String?
+  
+  // Sorting
+  displayOrder        Int      @default(0) @map("display_order")
+  
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  projectId           String   @map("project_id")
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  scopeId             String?  @map("scope_id")
+  scope               ProjectScope? @relation(fields: [scopeId], references: [id])
+
+  @@index([projectId], name: "idx_activities_project")
+  @@index([scopeId], name: "idx_activities_scope")
+  @@index([activityCode], name: "idx_activities_code")
+  @@map("activities")
+}
+
+enum ActivityUnit {
+  NOS @map("nos")
+  METERS @map("meters")
+  KG @map("kg")
+  HOURS @map("hours")
+  M2 @map("m2")
+  M3 @map("m3")
+}
