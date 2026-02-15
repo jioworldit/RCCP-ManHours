@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCCP Man-Hours Calculator - UI Mockups Overview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F9FAFB;
+            color: #1F2937;
+            min-height: 100vh;
+            padding: 40px 24px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        h1 { font-size: 32px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .subtitle { color: #6B7280; font-size: 16px; margin-bottom: 32px; }
+        
+        .info-card {
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            border-radius: 12px;
+            padding: 24px 28px;
+            color: white;
+            margin-bottom: 32px;
+        }
+        .info-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .info-card p { opacity: 0.9; font-size: 14px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .screen-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .screen-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .screen-header {
+            background: #F3F4F6;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .screen-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2563EB;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .screen-title { font-weight: 600; color: #111827; }
+        .screen-body { padding: 20px; }
+        .screen-desc { color: #6B7280; font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+        .screen-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            background: #EFF6FF;
+            color: #2563EB;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #E5E7EB;
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ RCCP Man-Hours Calculator</h1>
+        <p class="subtitle">UI Design Mockups - Phase 2 Focused Sprint</p>
+        
+        <div class="info-card">
+            <h2>Design Sprint Complete ✓</h2>
+            <p>5 desktop screen mockups ready for review. Click any screen below to view the interactive prototype.</p>
+        </div>
+        
+        <div class="grid">
+            <a href="screen-1-project.html" class="screen-card">
+                <div class="screen-header">
+                    <div class="screen-number">1</div>
+                    <div class="screen-title">Project Details</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Project setup with number, name, client, and location fields. Entry point to the calculation workflow.</p>
+                    <div class="screen-tags">
+                        <span class="tag">Form</span>
+                        <span class="tag">Stepper</span>
+                        <span class="tag">Input</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="screen-2-scope.html" class="screen-card">
+                <div class="screen-header">
+                    <div class="screen-number">2</div>
+                    <div class="screen-title">Scope Selection</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Multi-select scope with 9 activities including Material Handling, Marking, Fit-up, Welding, NDT, and more.</p>
+                    <div class="screen-tags">
+                        <span class="tag">9 Items</span>
+                        <span class="tag">Checkbox</span>
+                        <span class="tag">Icons</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="screen-3-technical.html" class="screen-card">
+                <div class="screen-header">
+                    <div class="screen-number">3</div>
+                    <div class="screen-title">Technical Input</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Technical specifications: Thickness, Material Grade, Diameter, Nozzles, Weld Length with quick-select options.</p>
+                    <div class="screen-tags">
+                        <span class="tag">Dropdown</span>
+                        <span class="tag">Numeric</span>
+                        <span class="tag">Units</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="screen-4-activities.html" class="screen-card">
+                <div class="screen-header">
+                    <div class="screen-number">4</div>
+                    <div class="screen-title">Activity Breakdown</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Calculation grid with Activity, Qty, Base Hrs, Factor, and Total Hrs. Editable inputs with real-time totals.</p>
+                    <div class="screen-tags">
+                        <span class="tag">Table</span>
+                        <span class="tag">Editable</span>
+                        <span class="tag">Grid</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="screen-5-results.html" class="screen-card">
+                <div class="screen-header">
+                    <div class="screen-number">5</div>
+                    <div class="screen-title">Calculation Results</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Final results dashboard with total hours, activity breakdown, distribution chart, and export options.</p>
+                    <div class="screen-tags">
+                        <span class="tag">Dashboard</span>
+                        <span class="tag">Charts</span>
+                        <span class="tag">Export</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="DESIGN.md" class="screen-card" style="background: #F8FAFF; border: 2px dashed #2563EB;">
+                <div class="screen-header" style="background: #EFF6FF;">
+                    <div class="screen-number" style="background: #2563EB;">📋</div>
+                    <div class="screen-title">Design System</div>
+                </div>
+                <div class="screen-body">
+                    <p class="screen-desc">Complete design documentation with color palette, typography, spacing, and component specifications.</p>
+                    <div class="screen-tags">
+                        <span class="tag">Colors</span>
+                        <span class="tag">Typography</span>
+                        <span class="tag">Specs</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="footer">
+            RCCP Man-Hours Calculator • Phase 2 Focused Design Sprint • February 15, 2025
+        </div>
+    </div>
+</body>
+</html>

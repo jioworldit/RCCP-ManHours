@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCCP Man-Hours - Step 1: Project</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F9FAFB;
+            color: #1F2937;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+        
+        /* Header */
+        .header { margin-bottom: 32px; }
+        .header h1 { font-size: 24px; font-weight: 600; color: #111827; }
+        .header p { color: #6B7280; margin-top: 4px; }
+        
+        /* Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 2;
+        }
+        .step-label {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6B7280;
+        }
+        .step.active .step-circle { background: #2563EB; color: white; }
+        .step.active .step-label { color: #2563EB; font-weight: 600; }
+        .step.completed .step-circle { background: #22C55E; color: white; }
+        .step.pending .step-circle { background: white; color: #9CA3AF; border: 2px solid #E5E7EB; }
+        .step-line {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #E5E7EB;
+            z-index: 1;
+        }
+        .step.completed .step-line { background: #22C55E; }
+        .step:last-child .step-line { display: none; }
+        
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card-title { font-size: 18px; font-weight: 600; margin-bottom: 24px; color: #111827; }
+        
+        /* Form */
+        .form-group { margin-bottom: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+        label .required { color: #EF4444; }
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1F2937;
+            background: white;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        input::placeholder { color: #9CA3AF; }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #E5E7EB;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+        }
+        .btn-primary { background: #2563EB; color: white; }
+        .btn-primary:hover { background: #1D4ED8; }
+        .btn-secondary { background: white; color: #374151; border: 1px solid #E5E7EB; }
+        .btn-secondary:hover { background: #F9FAFB; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ RCCP Man-Hours Calculator</h1>
+            <p>Calculate resource capacity planning for fabrication projects</p>
+        </div>
+        
+        <!-- Stepper -->
+        <div class="stepper">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <span class="step-label">Project</span>
+                <div class="step-line"></div>
+            </div>
+            <div class="step pending">
+                <div class="step-circle">2</div>
+                <span class="step-label">Scope</span>
+                <div class="step-line"></div>
+            </div>
+            <div class="step pending">
+                <div class="step-circle">3</div>
+                <span class="step-label">Technical</span>
+                <div class="step-line"></div>
+            </div>
+            <div class="step pending">
+                <div class="step-circle">4</div>
+                <span class="step-label">Activities</span>
+                <div class="step-line"></div>
+            </div>
+            <div class="step pending">
+                <div class="step-circle">5</div>
+                <span class="step-label">Calculation</span>
+            </div>
+        </div>
+        
+        <!-- Card -->
+        <div class="card">
+            <h2 class="card-title">Project Details</h2>
+            
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Project Number <span class="required">*</span></label>
+                        <input type="text" placeholder="e.g., PRJ-2025-001">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Name <span class="required">*</span></label>
+                        <input type="text" placeholder="Enter project name">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" placeholder="Client / Customer name">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" placeholder="Project location">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Project Description</label>
+                    <input type="text" placeholder="Brief description of the project">
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" disabled>Back</button>
+                    <button type="button" class="btn btn-primary">Next: Select Scope →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
