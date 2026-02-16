@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCCP Man-Hours | Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="./03-dashboard.html" class="text-2xl font-bold text-blue-600">RCCP</a>
+                    <span class="ml-2 text-gray-600">Man-Hours</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500">Project: RCCP-2026-001</span>
+                    <a href="./03-dashboard.html" class="text-gray-600 hover:text-gray-800">Exit</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Stepper -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Project</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Components</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Scope</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Activities</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-blue-600">
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                        <span class="ml-2 font-medium">Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Project Results</h1>
+            <div class="space-x-2">
+                <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition">
+                    📄 Export CSV
+                </button>
+                <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition">
+                    📑 Export PDF
+                </button>
+                <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition">
+                    📊 Export Excel
+                </button>
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
+                    🖨️ Print
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Total Man-Hours</p>
+                        <p class="text-2xl font-bold text-gray-800">1,250.5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Duration</p>
+                        <p class="text-2xl font-bold text-gray-800">45 days</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Manpower Required</p>
+                        <p class="text-2xl font-bold text-gray-800">850 shifts</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Est. Cost</p>
+                        <p class="text-2xl font-bold text-gray-800">$45,000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts & Breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Activity Distribution Chart -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-4">Activity Distribution</h3>
+                <canvas id="activityChart" width="400" height="300"></canvas>
+            </div>
+
+            <!-- Hours by Category -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-4">Hours by Category</h3>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">Welding Operations</span>
+                            <span class="font-medium">400 hrs (32%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 32%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">Marking & Cutting</span>
+                            <span class="font-medium">200 hrs (16%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 16%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">Fit-Up Assembly</span>
+                            <span class="font-medium">180 hrs (14%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 14%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">Material Handling</span>
+                            <span class="font-medium">150 hrs (12%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 12%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">NDT</span>
+                            <span class="font-medium">120 hrs (10%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-pink-500 h-2 rounded-full" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600">Other</span>
+                            <span class="font-medium">200 hrs (16%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gray-400 h-2 rounded-full" style="width: 16%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Breakdown Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="px-6 py-4 border-b">
+                <h3 class="text-lg font-medium text-gray-800">Detailed Breakdown</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left font-medium text-gray-500">Activity Type</th>
+                            <th class="px-6 py-3 text-right font-medium text-gray-500">Hours</th>
+                            <th class="px-6 py-3 text-right font-medium text-gray-500">%</th>
+                            <th class="px-6 py-3 text-center font-medium text-gray-500">Crew</th>
+                            <th class="px-6 py-3 text-right font-medium text-gray-500">Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Welding Operations</td>
+                            <td class="px-6 py-3 text-right">400.0</td>
+                            <td class="px-6 py-3 text-right">32.0%</td>
+                            <td class="px-6 py-3 text-center">4</td>
+                            <td class="px-6 py-3 text-right">12.5 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Marking & Cutting</td>
+                            <td class="px-6 py-3 text-right">200.0</td>
+                            <td class="px-6 py-3 text-right">16.0%</td>
+                            <td class="px-6 py-3 text-center">3</td>
+                            <td class="px-6 py-3 text-right">8.3 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Fit-Up Assembly</td>
+                            <td class="px-6 py-3 text-right">180.0</td>
+                            <td class="px-6 py-3 text-right">14.4%</td>
+                            <td class="px-6 py-3 text-center">4</td>
+                            <td class="px-6 py-3 text-right">5.6 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Material Handling</td>
+                            <td class="px-6 py-3 text-right">150.0</td>
+                            <td class="px-6 py-3 text-right">12.0%</td>
+                            <td class="px-6 py-3 text-center">2</td>
+                            <td class="px-6 py-3 text-right">9.4 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">NDT</td>
+                            <td class="px-6 py-3 text-right">120.0</td>
+                            <td class="px-6 py-3 text-right">9.6%</td>
+                            <td class="px-6 py-3 text-center">2</td>
+                            <td class="px-6 py-3 text-right">7.5 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Hydrostatic Testing</td>
+                            <td class="px-6 py-3 text-right">80.0</td>
+                            <td class="px-6 py-3 text-right">6.4%</td>
+                            <td class="px-6 py-3 text-center">3</td>
+                            <td class="px-6 py-3 text-right">3.3 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Painting & Coating</td>
+                            <td class="px-6 py-3 text-right">70.0</td>
+                            <td class="px-6 py-3 text-right">5.6%</td>
+                            <td class="px-6 py-3 text-center">2</td>
+                            <td class="px-6 py-3 text-right">4.4 days</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-medium text-gray-900">Other</td>
+                            <td class="px-6 py-3 text-right">50.5</td>
+                            <td class="px-6 py-3 text-right">4.0%</td>
+                            <td class="px-6 py-3 text-center">2</td>
+                            <td class="px-6 py-3 text-right">3.2 days</td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="bg-gray-100 font-bold">
+                        <tr>
+                            <td class="px-6 py-3">TOTAL</td>
+                            <td class="px-6 py-3 text-right text-blue-600">1,250.5</td>
+                            <td class="px-6 py-3 text-right">100%</td>
+                            <td class="px-6 py-3 text-center">-</td>
+                            <td class="px-6 py-3 text-right">45.0 days</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="./07-activities-grid.html" class="text-gray-600 hover:text-gray-800">← Back to Activities</a>
+            <div class="space-x-4">
+                <a href="./03-dashboard.html" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 inline-block">
+                    ✓ Complete Project
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Activity Distribution Pie Chart
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Welding', 'Cutting', 'Fit-Up', 'Material', 'NDT', 'Other'],
+                datasets: [{
+                    data: [32, 16, 14, 12, 10, 16],
+                    backgroundColor: [
+                        '#2563eb',
+                        '#22c55e',
+                        '#eab308',
+                        '#a855f7',
+                        '#ec4899',
+                        '#9ca3af'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

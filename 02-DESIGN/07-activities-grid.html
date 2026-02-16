@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCCP Man-Hours | Activities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .editable:focus { outline: 2px solid #2563eb; background: white; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="./03-dashboard.html" class="text-2xl font-bold text-blue-600">RCCP</a>
+                    <span class="ml-2 text-gray-600">Man-Hours</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500">Project: RCCP-2026-001</span>
+                    <a href="./03-dashboard.html" class="text-gray-600 hover:text-gray-800">Exit</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Stepper -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Project</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Components</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-green-600">
+                        <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                        <span class="ml-2 font-medium">Scope</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-green-600 mx-2"></div>
+                    <div class="flex items-center text-blue-600">
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                        <span class="ml-2 font-medium">Activities</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-gray-300 mx-2"></div>
+                    <div class="flex items-center text-gray-400">
+                        <span class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                        <span class="ml-2 font-medium">Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Activities & Calculations</h1>
+            <div class="space-x-2">
+                <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition">+ Add Activity</button>
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">Recalculate All</button>
+            </div>
+        </div>
+
+        <!-- Summary Bar -->
+        <div class="bg-blue-50 rounded-lg p-4 mb-6 flex justify-between items-center">
+            <div class="flex space-x-8">
+                <div>
+                    <p class="text-sm text-gray-600">Total Activities</p>
+                    <p class="text-xl font-bold text-gray-800">12</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Base Hours</p>
+                    <p class="text-xl font-bold text-gray-800">245.5</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Total Hours</p>
+                    <p class="text-xl font-bold text-blue-600">368.3</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Est. Duration</p>
+                    <p class="text-xl font-bold text-gray-800">46 days</p>
+                </div>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">Save Changes</button>
+        </div>
+
+        <!-- Activities Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-3 py-3 text-left font-medium text-gray-500">Code</th>
+                            <th class="px-3 py-3 text-left font-medium text-gray-500">Description</th>
+                            <th class="px-3 py-3 text-left font-medium text-gray-500">Component</th>
+                            <th class="px-3 py-3 text-center font-medium text-gray-500">Qty</th>
+                            <th class="px-3 py-3 text-left font-medium text-gray-500">Unit</th>
+                            <th class="px-3 py-3 text-right font-medium text-gray-500">Base Hrs</th>
+                            <th class="px-3 py-3 text-center font-medium text-gray-500">Factor</th>
+                            <th class="px-3 py-3 text-right font-medium text-gray-500">Total Hrs</th>
+                            <th class="px-3 py-3 text-center font-medium text-gray-500">Crew</th>
+                            <th class="px-3 py-3 text-right font-medium text-gray-500">Days</th>
+                            <th class="px-3 py-3 text-left font-medium text-gray-500">Weld Process</th>
+                            <th class="px-3 py-3 text-center font-medium text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-3 py-2 font-medium text-gray-900">F-101</td>
+                            <td class="px-3 py-2">Shell Course Fit-Up</td>
+                            <td class="px-3 py-2 text-gray-500">Shell Course 1</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="1" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-gray-500">nos</td>
+                            <td class="px-3 py-2 text-right">
+                                <input type="number" value="8.5" class="w-16 px-1 py-1 border border-gray-300 rounded text-right">
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <select class="w-16 px-1 py-1 border border-gray-300 rounded text-sm">
+                                    <option>0.5</option>
+                                    <option>0.75</option>
+                                    <option selected>1.0</option>
+                                    <option>1.25</option>
+                                    <option>1.5</option>
+                                    <option>2.0</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-right font-medium text-blue-600">10.2</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="4" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-right">1.3</td>
+                            <td class="px-3 py-2 text-gray-500">-</td>
+                            <td class="px-3 py-2 text-center">
+                                <button class="text-red-600 hover:text-red-800">🗑</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-3 py-2 font-medium text-gray-900">W-201</td>
+                            <td class="px-3 py-2">Longitudinal Seam Weld</td>
+                            <td class="px-3 py-2 text-gray-500">Shell Course 1</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="1" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-gray-500">nos</td>
+                            <td class="px-3 py-2 text-right">
+                                <input type="number" value="12.5" class="w-16 px-1 py-1 border border-gray-300 rounded text-right">
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <select class="w-16 px-1 py-1 border border-gray-300 rounded text-sm">
+                                    <option>0.5</option>
+                                    <option>0.75</option>
+                                    <option>1.0</option>
+                                    <option selected>1.25</option>
+                                    <option>1.5</option>
+                                    <option>2.0</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-right font-medium text-blue-600">18.4</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="3" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-right">2.3</td>
+                            <td class="px-3 py-2">
+                                <select class="w-24 px-1 py-1 border border-gray-300 rounded text-xs">
+                                    <option>SMAW</option>
+                                    <option>GTAW</option>
+                                    <option selected>SMAW+SAW</option>
+                                    <option>GTAW+SMAW</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <button class="text-red-600 hover:text-red-800">🗑</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-3 py-2 font-medium text-gray-900">W-301</td>
+                            <td class="px-3 py-2">Nozzle Set-On Weld</td>
+                            <td class="px-3 py-2 text-gray-500">Inlet Nozzle</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="2" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-gray-500">nos</td>
+                            <td class="px-3 py-2 text-right">
+                                <input type="number" value="4.2" class="w-16 px-1 py-1 border border-gray-300 rounded text-right">
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <select class="w-16 px-1 py-1 border border-gray-300 rounded text-sm">
+                                    <option>0.5</option>
+                                    <option>0.75</option>
+                                    <option>1.0</option>
+                                    <option>1.25</option>
+                                    <option selected>1.5</option>
+                                    <option>2.0</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-right font-medium text-blue-600">15.8</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="2" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-right">2.0</td>
+                            <td class="px-3 py-2">
+                                <select class="w-24 px-1 py-1 border border-gray-300 rounded text-xs">
+                                    <option>SMAW</option>
+                                    <option selected>GTAW+SMAW</option>
+                                    <option>SMAW+SAW</option>
+                                    <option>FCAW</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <button class="text-red-600 hover:text-red-800">🗑</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 bg-yellow-50">
+                            <td class="px-3 py-2 font-medium text-gray-900">W-302</td>
+                            <td class="px-3 py-2">Nozzle Set-On Weld</td>
+                            <td class="px-3 py-2 text-gray-500">Outlet Nozzle</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="1" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-gray-500">nos</td>
+                            <td class="px-3 py-2 text-right">
+                                <input type="number" value="4.2" class="w-16 px-1 py-1 border border-gray-300 rounded text-right">
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <select class="w-16 px-1 py-1 border border-gray-300 rounded text-sm">
+                                    <option>0.5</option>
+                                    <option>0.75</option>
+                                    <option>1.0</option>
+                                    <option>1.25</option>
+                                    <option selected>1.5</option>
+                                    <option>2.0</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-right font-medium text-blue-600">7.9</td>
+                            <td class="px-3 py-2 text-center">
+                                <input type="number" value="2" class="w-12 px-1 py-1 border border-gray-300 rounded text-center">
+                            </td>
+                            <td class="px-3 py-2 text-right">1.0</td>
+                            <td class="px-3 py-2">
+                                <select class="w-24 px-1 py-1 border border-gray-300 rounded text-xs">
+                                    <option>SMAW</option>
+                                    <option selected>GTAW+SMAW</option>
+                                    <option>SMAW+SAW</option>
+                                    <option>FCAW</option>
+                                </select>
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                <button class="text-red-600 hover:text-red-800">🗑</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="bg-gray-100 font-medium">
+                        <tr>
+                            <td colspan="5" class="px-3 py-3 text-right">Totals:</td>
+                            <td class="px-3 py-3 text-right">245.5</td>
+                            <td class="px-3 py-3"></td>
+                            <td class="px-3 py-3 text-right text-blue-600 text-lg">368.3</td>
+                            <td class="px-3 py-3 text-center">12</td>
+                            <td class="px-3 py-3 text-right">46.0</td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="./06-scope-selection.html" class="text-gray-600 hover:text-gray-800">← Back</a>
+            <div class="space-x-4">
+                <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Save Draft</button>
+                <a href="./08-results.html" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-block">View Results →</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
