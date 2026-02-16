@@ -13,12 +13,12 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)'}}>
       <div className="w-full max-w-md px-4">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-lg mb-4">
-            <span className="text-3xl font-bold text-blue-600">RCCP</span>
+            <span className="text-3xl font-bold" style={{color: '#2563eb'}}>RCCP</span>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Man-Hours Estimation</h1>
           <p className="text-blue-200 text-sm">Professional fabrication project management</p>
@@ -66,7 +66,13 @@ export default function Login() {
               <a href="#" className="text-blue-600 hover:text-blue-700">Forgot password?</a>
             </div>
 
-            <button type="submit" className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200">
+            <button 
+              type="submit" 
+              className="w-full py-3 px-4 text-white font-semibold rounded-lg transition duration-200"
+              style={{backgroundColor: '#2563eb'}}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#1d4ed8'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#2563eb'}
+            >
               Sign In
             </button>
           </form>

@@ -35,12 +35,12 @@ export default function Dashboard() {
 
   const getStatusBadge = (status) => {
     const styles = {
-      'Active': 'bg-green-100 text-green-800',
-      'In Progress': 'bg-blue-100 text-blue-800',
-      'Draft': 'bg-gray-100 text-gray-800',
-      'Completed': 'bg-green-100 text-green-800'
+      'Active': { backgroundColor: '#dcfce7', color: '#166534' },
+      'In Progress': { backgroundColor: '#dbeafe', color: '#1e40af' },
+      'Draft': { backgroundColor: '#f3f4f6', color: '#374151' },
+      'Completed': { backgroundColor: '#dcfce7', color: '#166534' }
     };
-    return styles[status] || 'bg-gray-100 text-gray-800';
+    return styles[status] || { backgroundColor: '#f3f4f6', color: '#374151' };
   };
 
   const handleLogout = () => {
@@ -49,67 +49,89 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div style={{backgroundColor: '#f3f4f6', minHeight: '100vh'}}>
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">RCCP</span>
-              <span className="ml-2 text-gray-600">Man-Hours</span>
+      <header style={{backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'}}>
+        <div style={{maxWidth: '1280px', margin: '0 auto', padding: '0 16px'}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px'}}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <span style={{fontSize: '24px', fontWeight: 'bold', color: '#2563eb'}}>RCCP</span>
+              <span style={{marginLeft: '8px', color: '#4b5563'}}>Man-Hours</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, John Doe</span>
-              <button onClick={handleLogout} className="text-gray-600 hover:text-gray-800">Logout</button>
+            <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+              <span style={{color: '#4b5563'}}>Welcome, John Doe</span>
+              <button 
+                onClick={handleLogout} 
+                style={{color: '#4b5563', background: 'none', border: 'none', cursor: 'pointer'}}
+                onMouseEnter={(e) => e.target.style.color = '#1f2937'}
+                onMouseLeave={(e) => e.target.style.color = '#4b5563'}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main style={{maxWidth: '1280px', margin: '0 auto', padding: '32px 16px'}}>
         {/* Page Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Projects</h1>
-          <Link to="/project/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px'}}>
+          <h1 style={{fontSize: '24px', fontWeight: 'bold', color: '#1f2937'}}>Projects</h1>
+          <Link 
+            to="/project/new" 
+            style={{
+              backgroundColor: '#2563eb', 
+              color: 'white', 
+              padding: '8px 16px', 
+              borderRadius: '8px',
+              textDecoration: 'none'
+            }}
+          >
             + New Project
           </Link>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-sm text-gray-500">Total Projects</p>
-            <p className="text-2xl font-bold text-gray-800">12</p>
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px'}}>
+          <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '16px'}}>
+            <p style={{fontSize: '14px', color: '#6b7280'}}>Total Projects</p>
+            <p style={{fontSize: '24px', fontWeight: 'bold', color: '#1f2937'}}>12</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-sm text-gray-500">Active</p>
-            <p className="text-2xl font-bold text-blue-600">8</p>
+          <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '16px'}}>
+            <p style={{fontSize: '14px', color: '#6b7280'}}>Active</p>
+            <p style={{fontSize: '24px', fontWeight: 'bold', color: '#2563eb'}}>8</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-sm text-gray-500">Completed</p>
-            <p className="text-2xl font-bold text-green-600">4</p>
+          <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '16px'}}>
+            <p style={{fontSize: '14px', color: '#6b7280'}}>Completed</p>
+            <p style={{fontSize: '24px', fontWeight: 'bold', color: '#16a34a'}}>4</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-sm text-gray-500">Total Hours</p>
-            <p className="text-2xl font-bold text-gray-800">3,450</p>
+          <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '16px'}}>
+            <p style={{fontSize: '14px', color: '#6b7280'}}>Total Hours</p>
+            <p style={{fontSize: '24px', fontWeight: 'bold', color: '#1f2937'}}>3,450</p>
           </div>
         </div>
 
         {/* Search & Filter */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
-          <div className="flex flex-wrap gap-4">
+        <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '16px', marginBottom: '24px'}}>
+          <div style={{display: 'flex', flexWrap: 'wrap', gap: '16px'}}>
             <input
               type="text"
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{
+                flex: '1', 
+                minWidth: '200px', 
+                padding: '8px 16px', 
+                border: '1px solid #d1d5db', 
+                borderRadius: '8px'
+              }}
             />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{padding: '8px 16px', border: '1px solid #d1d5db', borderRadius: '8px'}}
             >
               <option>All Status</option>
               <option>Active</option>
@@ -119,7 +141,7 @@ export default function Dashboard() {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{padding: '8px 16px', border: '1px solid #d1d5db', borderRadius: '8px'}}
             >
               <option>All Types</option>
               <option>Pressure Vessel</option>
@@ -131,34 +153,40 @@ export default function Dashboard() {
         </div>
 
         {/* Projects Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full">
-            <thead className="bg-gray-50">
+        <div style={{backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden'}}>
+          <table style={{minWidth: '100%', borderCollapse: 'collapse'}}>
+            <thead style={{backgroundColor: '#f9fafb'}}>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project #</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Project #</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Name</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Customer</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Type</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Hours</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Status</th>
+                <th style={{padding: '12px 24px', textAlign: 'left', fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase'}}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody style={{borderTop: '1px solid #e5e7eb'}}>
               {projects.map((project) => (
-                <tr key={project.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{project.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{project.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.customer}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.type}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{project.hours.toLocaleString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadge(project.status)}`}>
+                <tr key={project.id} style={{borderBottom: '1px solid #e5e7eb'}}>
+                  <td style={{padding: '16px 24px', fontSize: '14px', color: '#111827'}}>{project.id}</td>
+                  <td style={{padding: '16px 24px', fontSize: '14px', color: '#111827'}}>{project.name}</td>
+                  <td style={{padding: '16px 24px', fontSize: '14px', color: '#6b7280'}}>{project.customer}</td>
+                  <td style={{padding: '16px 24px', fontSize: '14px', color: '#6b7280'}}>{project.type}</td>
+                  <td style={{padding: '16px 24px', fontSize: '14px', color: '#111827'}}>{project.hours.toLocaleString()}</td>
+                  <td style={{padding: '16px 24px'}}>
+                    <span style={{
+                      padding: '4px 8px', 
+                      fontSize: '12px', 
+                      fontWeight: '600', 
+                      borderRadius: '9999px',
+                      ...getStatusBadge(project.status)
+                    }}>
                       {project.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                    <Link to={`/project/${project.id}/components`} className="hover:underline mr-3">View</Link>
+                  <td style={{padding: '16px 24px', fontSize: '14px'}}>
+                    <Link to={`/project/${project.id}/components`} style={{color: '#2563eb', textDecoration: 'underline'}}>View</Link>
                   </td>
                 </tr>
               ))}
@@ -167,14 +195,13 @@ export default function Dashboard() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-600">Showing 1-3 of 12 projects</p>
-          <div className="flex space-x-2">
-            <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>Previous</button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded">1</button>
-            <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">2</button>
-            <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">3</button>
-            <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">Next</button>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px'}}>
+          <p style={{fontSize: '14px', color: '#6b7280'}}>Showing 1-3 of 12 projects</p>
+          <div style={{display: 'flex', gap: '8px'}}>
+            <button style={{padding: '4px 12px', border: '1px solid #d1d5db', borderRadius: '4px'}} disabled>Previous</button>
+            <button style={{padding: '4px 12px', backgroundColor: '#2563eb', color: 'white', borderRadius: '4px'}}>1</button>
+            <button style={{padding: '4px 12px', border: '1px solid #d1d5db', borderRadius: '4px'}}>2</button>
+            <button style={{padding: '4px 12px', border: '1px solid #d1d5db', borderRadius: '4px'}}>Next</button>
           </div>
         </div>
       </main>
