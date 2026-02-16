@@ -6,62 +6,41 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    companyName: '',
+    company: '',
     password: '',
     confirmPassword: ''
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
-      setLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters');
-      setLoading(false);
       return;
     }
 
     try {
-      // TODO: Replace with actual Firebase/auth logic
-      // const { email, password, fullName, companyName } = formData;
-      // await createUserWithEmailAndPassword(auth, email, password);
-      
-      // For now, simulate signup
-      localStorage.setItem('token', 'demo-token');
-      localStorage.setItem('user', JSON.stringify({ 
-        email: formData.email, 
-        name: formData.fullName,
-        company: formData.companyName 
-      }));
-      
+      const userData = { email: formData.email, name: formData.fullName };
+      localStorage.setItem('user', JSON.stringify(userData));
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Failed to create account');
-    } finally {
-      setLoading(false);
+      setError('Failed to create account');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-lg mb-4">
@@ -111,8 +90,8 @@ const Signup = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
               <input
                 type="text"
-                name="companyName"
-                value={formData.companyName}
+                name="company"
+                value={formData.company}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 placeholder="Your Company Ltd"
@@ -129,7 +108,6 @@ const Signup = () => {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 placeholder="Min 6 characters"
                 required
-                minLength={6}
               />
             </div>
 
@@ -148,10 +126,9 @@ const Signup = () => {
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              Create Account
             </button>
           </form>
 
