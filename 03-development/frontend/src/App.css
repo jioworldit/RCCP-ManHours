@@ -5,10 +5,8 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-  padding: 20px;
 }
 
 .App {
@@ -25,4 +23,5 @@ a {
 /* Remove default button styling */
 button {
   font-family: inherit;
+  cursor: pointer;
 }

@@ -1,383 +1,188 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const API_URL = '/api';
+export default function Components() {
+  const [activeTab, setActiveTab] = useState('Pressure Vessel');
+  const [components, setComponents] = useState([
+    { id: 1, name: 'Shell Course 1', qty: 1, thickness: 25, material: 'SS 316', dimensions: '⌀2000 × 2000mm' },
+    { id: 2, name: 'Top Dish Head', qty: 1, thickness: 25, material: 'SS 316', dimensions: '⌀2000mm Ellipsoidal' },
+    { id: 3, name: 'Inlet Nozzle', qty: 2, thickness: 12, material: 'SS 316', dimensions: '4 inch, 300#' },
+  ]);
 
-const TABS = [
-  { id: 'PV', label: 'PV' },
-  { id: 'SKIDS', label: 'Skids' },
-  { id: 'EHOUSE', label: 'E-House' },
-  { id: 'STRUCTURE', label: 'Structure' },
-  { id: 'OTHER', label: 'Other' }
-];
+  const tabs = ['Pressure Vessel', 'Process Skid', 'E-House', 'Structure', 'Other'];
 
-const Components = ({ projectId }) => {
-  const [activeTab, setActiveTab] = useState('PV');
-  const [components, setComponents] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState('');
-
-  // Initialize empty arrays for each category
-  useEffect(() => {
-    const initialComponents = {};
-    TABS.forEach(tab => {
-      initialComponents[tab.id] = [];
-    });
-    setComponents(initialComponents);
-  }, []);
-
-  // Fetch components on mount
-  useEffect(() => {
-    if (projectId) {
-      fetchComponents();
-    }
-  }, [projectId]);
-
-  const fetchComponents = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_URL}/projects/${projectId}/components`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      const fetchedComponents = response.data.data.components;
-      
-      // Organize by category
-      const organized = {};
-      TABS.forEach(tab => {
-        organized[tab.id] = fetchedComponents.filter(c => c.category === tab.id);
-      });
-      
-      setComponents(organized);
-    } catch (error) {
-      console.error('Error fetching components:', error);
-      setMessage('Error loading components');
-    } finally {
-      setLoading(false);
-    }
+  const handleAddComponent = () => {
+    const newId = components.length + 1;
+    setComponents([...components, { id: newId, name: '', qty: 1, thickness: '', material: 'SS 316', dimensions: '' }]);
   };
 
-  const addRow = () => {
-    setComponents(prev => ({
-      ...prev,
-      [activeTab]: [
-        ...prev[activeTab],
-        { id: `temp-${Date.now()}`, name: '', quantity: 1, thicknessMm: '', material: '', isNew: true }
-      ]
-    }));
+  const handleDeleteComponent = (id) => {
+    setComponents(components.filter(c => c.id !== id));
   };
 
-  const deleteRow = (index) => {
-    setComponents(prev => ({
-      ...prev,
-      [activeTab]: prev[activeTab].filter((_, i) => i !== index)
-    }));
+  const updateComponent = (id, field, value) => {
+    setComponents(components.map(c => c.id === id ? { ...c, [field]: value } : c));
   };
-
-  const updateRow = (index, field, value) => {
-    setComponents(prev => ({
-      ...prev,
-      [activeTab]: prev[activeTab].map((row, i) => 
-        i === index ? { ...row, [field]: value } : row
-      )
-    }));
-  };
-
-  const saveComponents = async () => {
-    setSaving(true);
-    setMessage('');
-    
-    try {
-      const token = localStorage.getItem('token');
-      
-      // Flatten all components from all categories
-      const allComponents = [];
-      Object.entries(components).forEach(([category, items]) => {
-        items.forEach(item => {
-          allComponents.push({
-            name: item.name,
-            category: category,
-            quantity: parseInt(item.quantity) || 1,
-            thicknessMm: item.thicknessMm ? parseFloat(item.thicknessMm) : null,
-            material: item.material
-          });
-        });
-      });
-
-      await axios.post(
-        `${API_URL}/projects/${projectId}/components/batch`,
-        { components: allComponents },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setMessage('Components saved successfully!');
-      fetchComponents(); // Refresh to get proper IDs
-    } catch (error) {
-      console.error('Error saving components:', error);
-      setMessage('Error saving components');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const styles = {
-    container: {
-      padding: '20px',
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '1200px',
-      margin: '0 auto'
-    },
-    header: {
-      marginBottom: '20px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    title: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      margin: 0
-    },
-    tabs: {
-      display: 'flex',
-      borderBottom: '2px solid #ddd',
-      marginBottom: '20px'
-    },
-    tab: {
-      padding: '12px 24px',
-      cursor: 'pointer',
-      border: 'none',
-      background: 'none',
-      fontSize: '14px',
-      fontWeight: '500',
-      color: '#666',
-      borderBottom: '2px solid transparent',
-      marginBottom: '-2px',
-      transition: 'all 0.2s'
-    },
-    tabActive: {
-      color: '#1976d2',
-      borderBottom: '2px solid #1976d2'
-    },
-    tableContainer: {
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      overflow: 'hidden'
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'collapse'
-    },
-    th: {
-      backgroundColor: '#f5f5f5',
-      padding: '12px 16px',
-      textAlign: 'left',
-      fontWeight: '600',
-      color: '#333',
-      borderBottom: '2px solid #ddd',
-      fontSize: '14px'
-    },
-    td: {
-      padding: '12px 16px',
-      borderBottom: '1px solid #eee',
-      fontSize: '14px'
-    },
-    input: {
-      width: '100%',
-      padding: '8px 12px',
-      border: '1px solid #ddd',
-      borderRadius: '4px',
-      fontSize: '14px',
-      boxSizing: 'border-box'
-    },
-    button: {
-      padding: '10px 20px',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '500',
-      transition: 'all 0.2s'
-    },
-    buttonPrimary: {
-      backgroundColor: '#1976d2',
-      color: 'white'
-    },
-    buttonDanger: {
-      backgroundColor: '#dc3545',
-      color: 'white',
-      padding: '6px 12px',
-      fontSize: '12px'
-    },
-    buttonSuccess: {
-      backgroundColor: '#28a745',
-      color: 'white'
-    },
-    actions: {
-      display: 'flex',
-      gap: '10px',
-      marginTop: '20px',
-      justifyContent: 'flex-end'
-    },
-    message: {
-      padding: '12px 16px',
-      borderRadius: '4px',
-      marginBottom: '16px',
-      fontSize: '14px'
-    },
-    messageSuccess: {
-      backgroundColor: '#d4edda',
-      color: '#155724',
-      border: '1px solid #c3e6cb'
-    },
-    messageError: {
-      backgroundColor: '#f8d7da',
-      color: '#721c24',
-      border: '1px solid #f5c6cb'
-    },
-    emptyState: {
-      textAlign: 'center',
-      padding: '40px',
-      color: '#666'
-    },
-    rowNumber: {
-      width: '50px',
-      color: '#666',
-      fontSize: '12px'
-    }
-  };
-
-  const currentComponents = components[activeTab] || [];
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h1 style={styles.title}>Components</h1>
-      </div>
-
-      {message && (
-        <div style={{
-          ...styles.message,
-          ...(message.includes('success') ? styles.messageSuccess : styles.messageError)
-        }}>
-          {message}
+    <div className="bg-gray-100 min-h-screen">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <Link to="/dashboard" className="text-2xl font-bold text-blue-600">RCCP</Link>
+              <span className="ml-2 text-gray-600">Man-Hours</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-500">Project: RCCP-2026-001</span>
+              <Link to="/dashboard" className="text-gray-600 hover:text-gray-800">Exit</Link>
+            </div>
+          </div>
         </div>
-      )}
+      </header>
 
-      <div style={styles.tabs}>
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              ...styles.tab,
-              ...(activeTab === tab.id ? styles.tabActive : {})
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* Progress Stepper */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex items-center text-green-600">
+                <span className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</span>
+                <span className="ml-2 font-medium">Project</span>
+              </div>
+              <div className="w-16 h-0.5 bg-green-600 mx-2"></div>
+              <div className="flex items-center text-blue-600">
+                <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                <span className="ml-2 font-medium">Components</span>
+              </div>
+              <div className="w-16 h-0.5 bg-gray-300 mx-2"></div>
+              <div className="flex items-center text-gray-400">
+                <span className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                <span className="ml-2 font-medium">Scope</span>
+              </div>
+              <div className="w-16 h-0.5 bg-gray-300 mx-2"></div>
+              <div className="flex items-center text-gray-400">
+                <span className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                <span className="ml-2 font-medium">Activities</span>
+              </div>
+              <div className="w-16 h-0.5 bg-gray-300 mx-2"></div>
+              <div className="flex items-center text-gray-400">
+                <span className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                <span className="ml-2 font-medium">Results</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style={styles.tableContainer}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={{...styles.th, width: '50px'}}>#</th>
-              <th style={styles.th}>Component Name</th>
-              <th style={{...styles.th, width: '100px'}}>Qty</th>
-              <th style={{...styles.th, width: '120px'}}>Thickness (mm)</th>
-              <th style={styles.th}>Material</th>
-              <th style={{...styles.th, width: '100px'}}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentComponents.length === 0 ? (
-              <tr>
-                <td colSpan="6" style={styles.emptyState}>
-                  No components added. Click "Add Row" to add components.
-                </td>
-              </tr>
-            ) : (
-              currentComponents.map((row, index) => (
-                <tr key={row.id || index}>
-                  <td style={{...styles.td, ...styles.rowNumber}}>{index + 1}</td>
-                  <td style={styles.td}>
-                    <input
-                      type="text"
-                      value={row.name}
-                      onChange={(e) => updateRow(index, 'name', e.target.value)}
-                      placeholder="Enter component name"
-                      style={styles.input}
-                    />
-                  </td>
-                  <td style={styles.td}>
-                    <input
-                      type="number"
-                      value={row.quantity}
-                      onChange={(e) => updateRow(index, 'quantity', e.target.value)}
-                      min="1"
-                      style={{...styles.input, textAlign: 'center'}}
-                    />
-                  </td>
-                  <td style={styles.td}>
-                    <input
-                      type="number"
-                      value={row.thicknessMm || ''}
-                      onChange={(e) => updateRow(index, 'thicknessMm', e.target.value)}
-                      placeholder="mm"
-                      step="0.1"
-                      style={{...styles.input, textAlign: 'center'}}
-                    />
-                  </td>
-                  <td style={styles.td}>
-                    <input
-                      type="text"
-                      value={row.material || ''}
-                      onChange={(e) => updateRow(index, 'material', e.target.value)}
-                      placeholder="e.g. Carbon Steel"
-                      style={styles.input}
-                    />
-                  </td>
-                  <td style={styles.td}>
-                    <button
-                      onClick={() => deleteRow(index)}
-                      style={{...styles.button, ...styles.buttonDanger}}
-                    >
-                      Delete
-                    </button>
-                  </td>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Components</h1>
+
+        {/* Product Type Tabs */}
+        <div className="bg-white rounded-t-lg shadow border-b">
+          <div className="flex">
+            {tabs.map((tab) => (
+              <button 
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3 font-medium ${activeTab === tab ? 'tab-active border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Components Table */}
+        <div className="bg-white rounded-b-lg shadow p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-medium text-gray-800">Pressure Vessel Components</h3>
+            <button 
+              onClick={handleAddComponent}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+            >
+              + Add Component
+            </button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Component</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Qty</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thickness (mm)</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Material</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dimensions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {components.map((component) => (
+                  <tr key={component.id}>
+                    <td className="px-4 py-3">
+                      <input 
+                        type="text" 
+                        value={component.name}
+                        onChange={(e) => updateComponent(component.id, 'name', e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <input 
+                        type="number" 
+                        value={component.qty}
+                        onChange={(e) => updateComponent(component.id, 'qty', parseInt(e.target.value) || 0)}
+                        className="w-16 px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <input 
+                        type="number" 
+                        value={component.thickness}
+                        onChange={(e) => updateComponent(component.id, 'thickness', e.target.value)}
+                        className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <select 
+                        value={component.material}
+                        onChange={(e) => updateComponent(component.id, 'material', e.target.value)}
+                        className="w-32 px-2 py-1 border border-gray-300 rounded text-sm"
+                      >
+                        <option>SS 316</option>
+                        <option>SS 304</option>
+                        <option>CS</option>
+                        <option>Alloy</option>
+                      </select>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-500">{component.dimensions}</td>
+                    <td className="px-4 py-3">
+                      <button 
+                        onClick={() => handleDeleteComponent(component.id)}
+                        className="text-red-600 hover:text-red-800 text-sm"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      <div style={styles.actions}>
-        <button
-          onClick={addRow}
-          style={{...styles.button, ...styles.buttonPrimary}}
-        >
-          + Add Row
-        </button>
-        <button
-          onClick={saveComponents}
-          disabled={saving}
-          style={{
-            ...styles.button,
-            ...styles.buttonSuccess,
-            opacity: saving ? 0.7 : 1
-          }}
-        >
-          {saving ? 'Saving...' : 'Save All'}
-        </button>
-      </div>
+          {/* Action Buttons */}
+          <div className="flex justify-between items-center mt-6 pt-6 border-t">
+            <Link to="/projects/new" className="text-gray-600 hover:text-gray-800">← Back</Link>
+            <div className="space-x-4">
+              <button className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Save Draft</button>
+              <Link to="/projects/1/scope" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-block">Continue →</Link>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
-};
-
-export default Components;
+}
