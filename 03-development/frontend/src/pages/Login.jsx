@@ -8,7 +8,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic
+    localStorage.setItem('user', JSON.stringify({ email, name: 'John Doe' }));
+    window.location.href = '/dashboard';
   };
 
   return (
@@ -36,6 +37,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
                 placeholder="Enter your email"
+                required
               />
             </div>
 
@@ -47,6 +49,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
                 placeholder="Enter your password"
+                required
               />
             </div>
 
@@ -60,7 +63,7 @@ export default function Login() {
                 />
                 <span className="ml-2 text-gray-600">Remember me</span>
               </label>
-              <Link to="#" className="text-blue-600 hover:text-blue-700">Forgot password?</Link>
+              <a href="#" className="text-blue-600 hover:text-blue-700">Forgot password?</a>
             </div>
 
             <button type="submit" className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200">

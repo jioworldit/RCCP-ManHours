@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Signup = () => {
-  const navigate = useNavigate();
+export default function Signup() {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -10,33 +9,15 @@ const Signup = () => {
     password: '',
     confirmPassword: ''
   });
-  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-
-    try {
-      const userData = { email: formData.email, name: formData.fullName };
-      localStorage.setItem('user', JSON.stringify(userData));
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Failed to create account');
-    }
+    localStorage.setItem('user', JSON.stringify({ email: formData.email, name: formData.fullName }));
+    window.location.href = '/dashboard';
   };
 
   return (
@@ -53,13 +34,7 @@ const Signup = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">Sign Up</h2>
           
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
               <input
@@ -124,10 +99,7 @@ const Signup = () => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200"
-            >
+            <button type="submit" className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200">
               Create Account
             </button>
           </form>
@@ -140,9 +112,7 @@ const Signup = () => {
 
           <p className="text-center text-gray-600 text-sm">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
-              Sign in
-            </Link>
+            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">Sign in</Link>
           </p>
         </div>
 
@@ -152,6 +122,4 @@ const Signup = () => {
       </div>
     </div>
   );
-};
-
-export default Signup;
+}
