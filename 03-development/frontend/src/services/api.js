@@ -21,23 +21,23 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Activity API calls
+// Activity API calls - Updated to match backend routes
 export const activityApi = {
   // Get all activities for a project
-  getActivities: (projectId) => api.get(`/projects/${projectId}/activities`),
+  getActivities: (projectId) => api.get(`/activities/project/${projectId}`),
   
   // Generate activities using calculation engine
-  generateActivities: (projectId) => api.post(`/projects/${projectId}/activities/generate`),
+  generateActivities: (projectId) => api.post(`/activities/generate/${projectId}`),
   
-  // Update a single activity
-  updateActivity: (activityId, data) => api.patch(`/activities/${activityId}`, data),
+  // Update a single activity (backend uses PUT, not PATCH)
+  updateActivity: (activityId, data) => api.put(`/activities/${activityId}`, data),
   
   // Bulk update activities
   bulkUpdateActivities: (projectId, activityUpdates) => 
-    api.patch(`/projects/${projectId}/activities`, { activityUpdates }),
+    api.put(`/activities/project/${projectId}/bulk`, { activityUpdates }),
   
   // Add manual activity
-  addActivity: (projectId, data) => api.post(`/projects/${projectId}/activities`, data),
+  addActivity: (projectId, data) => api.post(`/activities/project/${projectId}/manual`, data),
   
   // Delete activity
   deleteActivity: (activityId) => api.delete(`/activities/${activityId}`),
@@ -46,11 +46,11 @@ export const activityApi = {
   calculateHours: (data) => api.post('/calculations/hours', data)
 };
 
-// Reference data API calls
+// Reference data API calls - Updated to match backend routes
 export const referenceApi = {
-  getWeldingProcesses: () => api.get('/references/welding-processes'),
-  getScopeTypes: () => api.get('/references/scope-types'),
-  getMaterialGrades: () => api.get('/references/material-grades')
+  getWeldingProcesses: () => api.get('/reference/welding-processes'),
+  getScopeTypes: () => api.get('/reference/scope-types'),
+  getMaterialGrades: () => api.get('/reference/material-grades')
 };
 
 export default api;
