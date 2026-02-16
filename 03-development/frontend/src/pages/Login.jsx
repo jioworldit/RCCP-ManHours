@@ -63,7 +63,7 @@ export default function Login() {
                 />
                 <span className="ml-2 text-gray-600">Remember me</span>
               </label>
-              <a href="#" className="text-blue-600 hover:text-blue-700">Forgot password?</a>
+              <button type="button" className="text-blue-600 hover:text-blue-700 bg-transparent border-none cursor-pointer">Forgot password?</button>
             </div>
 
             <button 

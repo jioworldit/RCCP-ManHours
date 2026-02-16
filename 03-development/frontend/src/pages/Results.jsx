@@ -1,15 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { 
   PieChart, 
   Pie, 
   Cell, 
   ResponsiveContainer, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
   Tooltip, 
   Legend 
 } from 'recharts';
